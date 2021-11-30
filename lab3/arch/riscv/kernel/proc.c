@@ -47,14 +47,9 @@ void task_init()
         task[i]->thread.ra = ret_val;
         
         task[i]->thread.sp = (uint64)task[i]   + PGSIZE;
-        //printk("SET [PID: %ld, COUNTER: %ld, PRIORITY: %ld, RA: %ld]\n",task[i]->pid, task[i]->counter, task[i]->priority, task[i]->thread.ra);
     }
 
     printk("...proc_init done!\n");
-    // printk("size of thread_info: %ld\n", sizeof(idle->thread_info));
-    // printk("size of thread_struct:%ld\n", sizeof(idle->thread));
-    // printk("size of task_struct:%ld\n", sizeof(idle));
-    //printk("size of page:%ld\n", sizeof(*idle));
 }
 
 void dummy() {
@@ -108,7 +103,7 @@ void switch_to(struct task_struct* next) {
             "ld s4, 0x58(t0)\n"
             "ld s5, 0x60(t0)\n"
             "ld s6, 0x68(t0)\n"
-            "ld s7, 0x70(t0)\n"//打开就没有时间间隔。。。
+            "ld s7, 0x70(t0)\n"
             "ld s8, 0x78(t0)\n"
             "ld s9, 0x80(t0)\n"
             "ld s10, 0x88(t0)\n"
