@@ -1,3 +1,3 @@
 # OS-21-fall
 
-浙江大学操作系统课程实验记录
+some functions may not follows TA's suggestions, but it can work correctly.
