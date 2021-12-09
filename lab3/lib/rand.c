@@ -4,7 +4,7 @@ int initialize = 0;
 int r[1000];
 int t = 0;
 
-uint64 rand() {
+unsigned long rand() {
     int i;
 
     if (initialize == 0) {
@@ -17,18 +17,19 @@ uint64 rand() {
         }
         for (i = 31; i < 34; i++) {
             r[i] = r[i - 31];
+        }
+        for (i = 34; i < 344; i++) {
             r[i] = r[i - 31] + r[i - 3];
         }
 
 		initialize = 1;
     }
-    
-	//t = t % 656;
-    t = t%32;
+
+	t = t % 656;
+
     r[t + 344] = r[t + 344 - 31] + r[t + 344 - 3];
     
 	t++;
-    //for(int i = 0; i < 1000; i++)printk("%ld,", r[t] % 10 );
-    //return (uint64)r[t - 1 + 344] % 10 + 1;
-    return (uint64)r[t]%10 + 1;
+
+    return (unsigned long)r[t - 1 + 344] % 10 + 1;
 }

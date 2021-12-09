@@ -30,13 +30,13 @@ void task_init()
         task[i] = (struct task_struct*)kalloc();
          // 2. 其中每个线程的 state 为 TASK_RUNNING, counter 为 0, priority 使用 rand() 来设置, pid 为该线程在线程数组中的下标。
         task[i]->state = TASK_RUNNING;
-        task[i]->counter = 0;//rand();//rand();
+        task[i]->counter = 0;
         task[i]->priority = rand();
         task[i]->pid = i;
         // 3. 为 task[1] ~ task[NR_TASKS - 1] 设置 `thread_struct` 中的 `ra` 和 `sp`,
         // 4. 其中 `ra` 设置为 __dummy （见 4.3.2）的地址， `sp` 设置为 该线程申请的物理页的高地址
         //task[i]->thread.ra = ;
-        uint64  ret_val;
+        unsigned long  ret_val;
         __asm__ volatile(
             "la t0, __dummy\n"
             "mv %[ret_val], t0\n"
@@ -44,17 +44,16 @@ void task_init()
             :
             :"memory"
         );
-        task[i]->thread.ra = ret_val;
-        
-        task[i]->thread.sp = (uint64)task[i]   + PGSIZE;
+        task[i]->thread.ra = ret_val;        
+        task[i]->thread.sp = (unsigned long)task[i]   + PGSIZE;
     }
 
     printk("...proc_init done!\n");
 }
 
 void dummy() {
-    uint64 MOD = 1000000007;
-    uint64 auto_inc_local_var = 0;
+    unsigned long MOD = 1000000007;
+    unsigned long auto_inc_local_var = 0;
     int last_counter = -1;
 
     
@@ -124,18 +123,18 @@ void do_timer(void) {
 
     /* YOUR CODE HERE */
 
-    uint64 counter_sum = 0;
+    unsigned long counter_sum = 0;
     for(int i = 1; i < NR_TASKS; i++)
     {
         counter_sum += task[i]->counter;
     }
     if(counter_sum <= 1)
     {
-        printk("\n");
+        //printk("\n");
         for(int i = 1; i < NR_TASKS; i++)
         {
             task[i]->counter = rand();
-            printk("SET [PID: %ld, COUNTER: %ld, PRIORITY: %ld]\n",task[i]->pid, task[i]->counter, task[i]->priority);
+            //printk("SET [PID: %ld, COUNTER: %ld, PRIORITY: %ld]\n",task[i]->pid, task[i]->counter, task[i]->priority);
         }
         schedule();
     }
@@ -154,7 +153,7 @@ void do_timer(void) {
 }
 
 #ifdef SJF
-//DSJF(短作业优先调度算法)
+//SJF(短作业优先调度算法)
 void schedule(void)
 {
     /*YOUR CODE HERE*/
@@ -179,7 +178,7 @@ void schedule(void)
 #endif
 
 #ifdef PRIORITY
-//DPRIORITY(优先级调度算法)
+//PRIORITY(优先级调度算法)
  void schedule(void)
 {
     struct task_struct* p;
@@ -201,3 +200,4 @@ void schedule(void)
     switch_to(p);
 } 
 #endif
+
